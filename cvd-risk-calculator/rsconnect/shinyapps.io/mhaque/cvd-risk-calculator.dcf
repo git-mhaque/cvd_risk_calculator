@@ -1,4 +1,8 @@
 name: cvd-risk-calculator
 account: mhaque
-bundleId: 218141
+server: shinyapps.io
+bundleId: 335596
 url: https://mhaque.shinyapps.io/cvd-risk-calculator
+when: 1450580912.64091
+asMultiple: FALSE
+asStatic: FALSE
