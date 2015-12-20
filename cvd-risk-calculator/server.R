@@ -1,6 +1,7 @@
 library(shiny)
 
 calculateRisk <- function(age, sex, isSmoker, hasDiabetes, systolicBloodPressure, hdlCholesterol, totalCholesterol) {
+  
   O1 <- 0.6536
   O2 <- -0.2402
   B0 <- 18.8144
@@ -35,17 +36,14 @@ calculateRisk <- function(age, sex, isSmoker, hasDiabetes, systolicBloodPressure
   
   p <- 1 - exp(-exp((log(T) - u) / exp(O1 + O2 * u)));
   
-  
   return (p*100)
   
 }
 
 
-
 shinyServer(function(input, output) {
 
   riskProfile <- reactive({
-    selectedAge <- as.numeric(input$age)
     ageMin <- 1;
     ageMax <- 100;
     ageProfile <- array(1:ageMax-ageMin+1) 
@@ -66,17 +64,11 @@ shinyServer(function(input, output) {
     }
     
     ageProfile 
+  
   })
   
-# output$age <- renderText( paste("Age:",as.numeric(input$age) )) 
-#  output$gender <- renderText( paste("Gender:", if(as.numeric(input$gender)==1) "Female" else "Male")) 
-#  output$smoker <- renderText( paste("Is smoker?", if(as.numeric(input$smoker)==1) "Yes" else "No")) 
-#  output$diabetes <- renderText( paste("Has diabetes?", if(as.numeric(input$diabetes)==1) "Yes" else "No")) 
-#  output$sbp <- renderText( paste("Systolic blood pressure (mmHg):",as.numeric(input$sbp) )) 
-#  output$hdlc <- renderText( paste("HDL cholesterol (mmol/L):",as.numeric(input$hdlc) )) 
-#  output$totalc <- renderText( paste("Total cholesterol (mmol/L):",as.numeric(input$totalc) )) 
-  output$risk <- renderText( 
-    {
+  output$risk <- renderText({
+    
       risk <- calculateRisk(
         as.numeric(input$age),
         as.numeric(input$gender),
@@ -89,14 +81,15 @@ shinyServer(function(input, output) {
       
       risk <- round(risk,digits = 2)
       
-      paste("<div class='alert alert-info'><h4>Risk for cardiovascular disease (%):", risk, "</h4></div>")
-    }
-    ) 
-  output$plotRisk <- renderPlot(
-    {
+      paste("<div class='alert alert-info'><h4>Risk for cardiovascular disease:", risk, " (%)</h4></div>")
+  
+  }) 
+  
+  output$plotRisk <- renderPlot({
+    
       plot(riskProfile(), xlab = "Age", ylab = "Risk (%)", type = "l", main = "Risk at different ages")
       abline(v = as.numeric(input$age), col = "red")
-    }
-  )
+  
+  })
   
 })

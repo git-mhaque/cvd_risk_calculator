@@ -16,15 +16,6 @@ shinyUI(fluidPage(
     ),
     
     mainPanel(
-      #h4("Results:"),
-      htmlOutput("age"),
-      htmlOutput("gender"),
-      htmlOutput("smoker"),
-      htmlOutput("diabetes"),
-      htmlOutput("sbp"),
-      htmlOutput("hdlc"),
-      htmlOutput("totalc"),   
-      #hr(),
       htmlOutput("risk"),
       hr(),
       plotOutput("plotRisk")
